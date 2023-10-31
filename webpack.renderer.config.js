@@ -1,21 +1,21 @@
-const rules = require('./webpack.rules');
+const rules = require('./webpack.rules')
 
 rules.push({
   test: /\.css$/,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
-});
+  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
+})
 
 rules.push({
-	test: /\.mp3$/,
-  loader: 'file-loader',
+  test: /\.mp3$/,
+  loader: 'file-loader'
 })
 
 module.exports = {
   // Put your normal webpack config below here
   module: {
-    rules,
+    rules
   },
   output: {
-    assetModuleFilename: 'assets/[hash][ext][query]' // add this line
+    assetModuleFilename: 'assets/[hash][ext][query]'
   }
-};
+}

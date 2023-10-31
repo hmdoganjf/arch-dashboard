@@ -6,46 +6,61 @@ const Escalations = ({ setIsPanic }) => {
 
   React.useEffect(() => {
     const fetchEscalations = async () => {
-      const newEsc = await window.ipcRenderer.getEscalations();
-      setEscalations(newEsc);
+      const newEsc = await window.ipcRenderer.getEscalations()
+      setEscalations(newEsc)
       if (newEsc.length > 0) {
-        setIsPanic(true);
+        setIsPanic(true)
       }
     }
-    fetchEscalations();
+    fetchEscalations()
   }, [])
 
-  const handleMuteSelect = (e) => {
-    const duration = e.target.value;
-    setMuteDuration(duration);
+  const handleMuteSelect = e => {
+    const duration = e.target.value
+    setMuteDuration(duration)
   }
 
   const handleMute = async () => {
-    setIsPanic(false);
-    await window.ipcRenderer.muteEscalations(muteDuration * 60 * 1000);
+    setIsPanic(false)
+    await window.ipcRenderer.muteEscalations(muteDuration * 60 * 1000)
   }
 
   return (
-    <>
-      <h1>Current Escalations</h1>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}
+    >
+      <h1>Current Escalation(s)</h1>
       <ol>
-        {escalations?.map((escalation) => (
+        {escalations?.map(escalation => (
           <li key={escalation.id}>
-            <a target='_blank' href={`${window.ipcRenderer.getL3Link()}/${escalation.id}`}>
+            <a
+              target='_blank'
+              href={`${window.ipcRenderer.getL3Link()}/${escalation.id}`}
+            >
               <h2>{`${escalation.title} - ${escalation.created_at}`}</h2>
             </a>
-            <button onClick={() => window.ipcRenderer.ackEscalation(escalation.id)}>Acknowledge</button>
+            <button
+              onClick={() => window.ipcRenderer.ackEscalation(escalation.id)}
+            >
+              Acknowledge
+            </button>
           </li>
         ))}
       </ol>
-      <select onChange={handleMuteSelect}>
+      <div>
+        <select onChange={handleMuteSelect}>
           <option value={15}>15</option>
           <option value={30}>30</option>
           <option value={60}>60</option>
           <option value={120}>120</option>
-      </select>
-      <button onClick={handleMute}>Mute</button>
-    </>
+        </select>
+        <button onClick={handleMute}>Mute</button>
+      </div>
+    </div>
   )
 }
 

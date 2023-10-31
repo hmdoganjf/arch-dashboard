@@ -4,4 +4,4 @@ export const EXTERNAL_WINDOW_URLS = {
     sentry: 'https://jotform.sentry.io/dashboard/67243/?project=132624&project=1211430&project=1234288&project=1353659&project=5314916&project=5975209&project=4504643179577344&project=4504643273031680&project=4505277458939904&statsPeriod=6h'
 };
 
-export const TIMEOUT_MS = 5 * 1000;
+export const TIMEOUT_MS = process.env.TIMEOUT_SECONDS * 1000;

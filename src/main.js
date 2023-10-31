@@ -31,6 +31,8 @@ const isMuted = () => {
   return true;
 }
 
+const ignoredEscalationIDs = [];
+
 const getVisibleWindow = (windows) => {
   return windows.find(window => window.isVisible() && !window.getURL().includes('main_window'));
 }
@@ -74,7 +76,7 @@ const fetchEscalations = async () => {
       }
     });
     const data = await response.json();
-    return data.content;
+    return data.content.filter(escalation => !ignoredEscalationIDs.includes(escalation.id));
 }
 
 const muteEscalations = (duration) => {
@@ -107,7 +109,6 @@ const handleNewView = async () => {
   }
   const newWindow = BrowserWindow.fromId(windowIds[currentViewList[currentViewIndex]]);
   newWindow.reload();
-  newWindow.webContents.openDevTools();
   newWindow.maximize();
   newWindow.focus();
   currentViewIndex = (currentViewIndex + 1) % currentViewList.length;
@@ -122,9 +123,7 @@ ipcMain.on('stagnant', async (event, data) => {
   const windows = BrowserWindow.getAllWindows();
   if (Object.keys(windows).length === 0) return;
   const visibleWindow = getVisibleWindow(windows);
-  console.log(url);
-  console.log(visibleWindow.webContents.getURL());
-  if (visibleWindow.webContents.getURL() !== url) return;
+  if (visibleWindow?.webContents.getURL() !== url) return;
   visibleWindow.hide();
   await handleNewView();
 });
@@ -132,5 +131,10 @@ ipcMain.on('stagnant', async (event, data) => {
 ipcMain.on('muteEscalations', async (event, duration) => {
   console.log(duration);
   muteEscalations(duration);
+  await handleNewView();
+});
+
+ipcMain.on('ackEscalation', async (event, id) => {
+  ignoredEscalationIDs.push(id);
   await handleNewView();
 });

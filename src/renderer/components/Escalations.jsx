@@ -20,9 +20,9 @@ const Escalations = ({ setIsPanic }) => {
     setMuteDuration(duration);
   }
 
-  const handleMute = () => {
+  const handleMute = async () => {
     setIsPanic(false);
-    window.ipcRenderer.muteEscalations(muteDuration * 60 * 1000);
+    await window.ipcRenderer.muteEscalations(muteDuration * 60 * 1000);
   }
 
   return (
@@ -34,6 +34,7 @@ const Escalations = ({ setIsPanic }) => {
             <a target='_blank' href={`${window.ipcRenderer.getL3Link()}/${escalation.id}`}>
               <h2>{`${escalation.title} - ${escalation.created_at}`}</h2>
             </a>
+            <button onClick={() => window.ipcRenderer.ackEscalation(escalation.id)}>Acknowledge</button>
           </li>
         ))}
       </ol>

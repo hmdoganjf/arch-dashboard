@@ -4,9 +4,22 @@
     <meta charset="UTF-8" />
     <title>Hello World!</title>
     <style>
+      ol li {
+        display: flex;
+        flex-direction: row;
+        gap: 2em;
+        align-items: center;
+      }
+
       ol li::marker {
         font-size: 1.5em;
         font-weight: bold;
+      }
+
+      ol li button {
+        font-size: 1em;
+        font-weight: bold;
+        height: 2em;
       }
     </style>
   </head>

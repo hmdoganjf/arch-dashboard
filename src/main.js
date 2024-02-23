@@ -2,12 +2,13 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron')
 require('dotenv').config()
 const { EXTERNAL_WINDOW_URLS, TIMEOUT_MS } = require('./constants')
 
-const currentViewList = ['voyager', 'kibana', 'sentry']
+const currentViewList = ['voyager', 'kibana', 'sentry', 'tests']
 let currentViewIndex = 0
 const windowIds = {
   voyager: null,
   kibana: null,
-  sentry: null
+  sentry: null,
+  tests: null
 }
 let muted = false
 let muteDuration = 0
@@ -56,6 +57,13 @@ app.whenReady().then(async () => {
       }
     }),
     sentry: new BrowserWindow({
+      show: false,
+      webPreferences: {
+        preload: `${__dirname}/../../src/preload.js`,
+        contextIsolation: false
+      }
+    }),
+    tests: new BrowserWindow({
       show: false,
       webPreferences: {
         preload: `${__dirname}/../../src/preload.js`,
@@ -146,5 +154,14 @@ ipcMain.on('muteEscalations', async (event, duration) => {
 
 ipcMain.on('ackEscalation', async (event, id) => {
   ignoredEscalationIDs.push(id)
+  await handleNewView()
+})
+
+ipcMain.on('prev', async (event, data) => {
+  currentViewIndex = (currentViewIndex - 2 + currentViewList.length) % currentViewList.length;
+  await handleNewView()
+})
+
+ipcMain.on('next', async (event, data) => {
   await handleNewView()
 })

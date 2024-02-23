@@ -37,5 +37,35 @@ if (url.includes('main_window')) {
     }, TIMEOUT_MS)
   }
 
-  document.addEventListener('mousemove', onMouseMove)
+  const onKeyPress = (e) => {
+    console.log(e);
+    switch(e.key) {
+      case 'p':
+      case 'ArrowLeft':
+        ipcRenderer.send('prev', {
+          url: location.href,
+          source: 'keypress'
+        })
+        break;
+      case 'n':
+      case 'ArrowRight':
+        ipcRenderer.send('next', {
+          url: location.href,
+          source: 'keypress'
+        })
+        break;
+      default:
+        break;
+    }
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      ipcRenderer.send('stagnant', {
+        url: location.href,
+        source: 'hover'
+      })
+    }, TIMEOUT_MS)
+  }
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('keydown', onKeyPress);
 }

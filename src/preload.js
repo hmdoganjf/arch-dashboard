@@ -66,6 +66,6 @@ if (url.includes('main_window')) {
     }, TIMEOUT_MS)
   }
 
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('keydown', onKeyPress);
+  document.addEventListener('mousemove', onMouseMove, { capture: true });
+  document.addEventListener('keydown', onKeyPress, { capture: true });
 }

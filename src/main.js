@@ -2,10 +2,11 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron')
 require('dotenv').config()
 const { EXTERNAL_WINDOW_URLS, TIMEOUT_MS } = require('./constants')
 
-const currentViewList = ['voyager', 'kibana', 'sentry', 'tests']
+const currentViewList = ['voyager','voyagergraph', 'kibana', 'sentry', 'tests']
 let currentViewIndex = 0
 const windowIds = {
   voyager: null,
+  voyagergraph: null,
   kibana: null,
   sentry: null,
   tests: null
@@ -15,6 +16,7 @@ let muteDuration = 0
 let mutedOn = null
 
 const isMuted = () => {
+  return true;
   console.log({
     muted,
     mutedOn,
@@ -43,6 +45,13 @@ const getVisibleWindow = windows => {
 app.whenReady().then(async () => {
   const windows = {
     voyager: new BrowserWindow({
+      show: false,
+      webPreferences: {
+        preload: `${__dirname}/../../src/preload.js`,
+        contextIsolation: false
+      }
+    }),
+    voyagergraph: new BrowserWindow({
       show: false,
       webPreferences: {
         preload: `${__dirname}/../../src/preload.js`,

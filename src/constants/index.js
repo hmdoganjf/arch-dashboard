@@ -1,6 +1,7 @@
 export const EXTERNAL_WINDOW_URLS = {
-  voyager: 'https://voyager.jotformers.com/f/frontend-prs/',
-  kibana:
+  voyager: 'https://voyager.jotformers.com/f/frontend-prs/?aa=1&queueCount=1',
+voyagergraph: 'https://voyager.jotformers.com/f/frontend-prs/metrics/daily/prs',  
+kibana:
     'https://kibana.jotformers.com/app/dashboards#/view/0a9551b0-7242-11ee-a9ba-f13e4fed30ba',
   sentry:
     'https://jotform.sentry.io/dashboard/67243/?statsPeriod=6h',

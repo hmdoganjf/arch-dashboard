@@ -91,18 +91,23 @@ app.whenReady().then(async () => {
 })
 
 const fetchEscalations = async () => {
-  const response = await fetch(
-    `https://www.jotform.com/API/l3-tickets?activeTab=escalations&status=OPEN&apiKey=${process.env.JOTFORM_API_KEY}`,
-    {
-      headers: {
-        referer: 'https://www.jotform.com'
+  try {
+    const response = await fetch(
+      `https://www.jotform.com/API/l3-tickets?activeTab=escalations&status=OPEN&apiKey=${process.env.JOTFORM_API_KEY}`,
+      {
+        headers: {
+          referer: 'https://www.jotform.com'
+        }
       }
-    }
-  )
-  const data = await response.json()
-  return data.content.filter(
-    escalation => !ignoredEscalationIDs.includes(escalation.id)
-  )
+    )
+    const data = await response.json()
+    return data.content.filter(
+      escalation => !ignoredEscalationIDs.includes(escalation.id)
+    )
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
 }
 
 const muteEscalations = duration => {

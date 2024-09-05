@@ -1,6 +1,8 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron')
+const { app, BrowserWindow, ipcMain, shell, powerSaveBlocker } = require('electron')
 require('dotenv').config()
 const { EXTERNAL_WINDOW_URLS, TIMEOUT_MS } = require('./constants')
+
+powerSaveBlocker.start('prevent-display-sleep');
 
 const currentViewList = ['voyager','voyagergraph', 'kibana', 'sentry', 'tests']
 let currentViewIndex = 0
